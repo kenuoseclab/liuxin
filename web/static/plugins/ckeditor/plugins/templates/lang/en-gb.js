@@ -1,0 +1,1 @@
+CKEDITOR.plugins.setLang("templates","en-gb",{button:"Templates",emptyListMsg:"(No documentation defined)",insertOption:"Replace actual contents",options:"Template Options",selectPromptMsg:"Please select the template to open in the editor",title:"Content Templates"});

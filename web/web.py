@@ -2,6 +2,7 @@ from flask import Flask
 import os
 from datetime import timedelta
 from flask_wtf import CSRFProtect
+from flask import render_template
 
 app = Flask(__name__)
 app.secret_key = os.urandom(64)
@@ -11,7 +12,7 @@ CSRFProtect(app)
 
 @app.route('/')
 def index():
-    pass
+    return render_template('./documentation/index.html')
 
 
 if __name__ == '__main__':
