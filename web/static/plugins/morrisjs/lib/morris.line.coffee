@@ -31,10 +31,22 @@ class Morris.Line extends Morris.Grid
     pointStrokeColors: ['#ffffff']
     pointFillColors: []
     smooth: true
+    shown: true
     xLabels: 'auto'
     xLabelFormat: null
     xLabelMargin: 24
+    verticalGrid: false
+    verticalGridHeight: 'full'
+    verticalGridStartOffset: 0
     hideHover: false
+    trendLine: false
+    trendLineWidth: 2
+    trendLineWeight: false
+    trendLineColors: [
+      '#689bc3'
+      '#a2b3bf'
+      '#64b764'
+    ]
 
   # Do any size-related calculations
   #
@@ -51,7 +63,7 @@ class Morris.Line extends Morris.Grid
       row._x = @transX(row.x)
       row._y = for y in row.y
         if y? then @transY(y) else y
-      row._ymax = Math.min [@bottom].concat(y for y in row._y when y?)...
+      row._ymax = Math.min [@bottom].concat(y for y, i in row._y when y? and @hasToShow(i))...
 
   # hit test - returns the index of the row at the given x-coordinate
   #
@@ -99,12 +111,16 @@ class Morris.Line extends Morris.Grid
   # @private
   hoverContentForRow: (index) ->
     row = @data[index]
-    content = "<div class='morris-hover-row-label'>#{row.label}</div>"
+    content = $("<div class='morris-hover-row-label'>").text(row.label)
+    content = content.prop('outerHTML')
     for y, j in row.y
+      if @options.labels[j] is false
+        continue
+
       content += """
         <div class='morris-hover-point' style='color: #{@colorFor(row, j, 'label')}'>
           #{@options.labels[j]}:
-          #{@yLabelFormat(y)}
+          #{@yLabelFormat(y, j)}
         </div>
       """
     if typeof @options.hoverCallback is 'function'
@@ -141,6 +157,7 @@ class Morris.Line extends Morris.Grid
     ypos = @bottom + @options.padding / 2
     prevLabelMargin = null
     prevAngleMargin = null
+
     drawLabel = (labelText, xpos) =>
       label = @drawXAxisLabel(@transX(xpos), ypos, labelText)
       textBox = label.getBBox()
@@ -162,8 +179,12 @@ class Morris.Line extends Morris.Grid
             Math.sin(@options.xLabelAngle * Math.PI / 180.0)
           prevAngleMargin = labelBox.x - margin
         prevLabelMargin = labelBox.x - @options.xLabelMargin
+        if @options.verticalGrid is true
+          @drawVerticalGridLine(xpos)
+
       else
         label.remove()
+
     if @options.parseTime
       if @data.length == 1 and @options.xLabels == 'auto'
         # where there's only one value in the series, we can't make a
@@ -172,11 +193,30 @@ class Morris.Line extends Morris.Grid
         labels = [[@data[0].label, @data[0].x]]
       else
         labels = Morris.labelSeries(@xmin, @xmax, @width, @options.xLabels, @options.xLabelFormat)
+    else if @options.customLabels
+      labels = ([row.label, row.x] for row in @options.customLabels)
     else
       labels = ([row.label, row.x] for row in @data)
     labels.reverse()
     for l in labels
       drawLabel(l[0], l[1])
+
+    if typeof @options.verticalGrid is 'string'
+      lines = Morris.labelSeries(@xmin, @xmax, @width, @options.verticalGrid)
+      for l in lines
+        @drawVerticalGridLine(l[1])
+
+  # Draw a vertical grid line
+  #
+  # @private
+  drawVerticalGridLine: (xpos) ->
+    xpos = Math.floor(@transX(xpos)) + 0.5
+    yStart = @yStart + @options.verticalGridStartOffset
+    if @options.verticalGridHeight is 'full'
+      yEnd = @yEnd
+    else
+      yEnd = @yStart - @options.verticalGridHeight
+    @drawGridLine("M#{xpos},#{yStart}V#{yEnd}")
 
   # draw the data series
   #
@@ -184,9 +224,16 @@ class Morris.Line extends Morris.Grid
   drawSeries: ->
     @seriesPoints = []
     for i in [@options.ykeys.length-1..0]
-      @_drawLineFor i
+      if @hasToShow(i)
+        if @options.trendLine isnt false and
+            @options.trendLine is true or @options.trendLine[i] is true
+          @_drawTrendLine i
+
+        @_drawLineFor i
+
     for i in [@options.ykeys.length-1..0]
-      @_drawPointFor i
+      if @hasToShow(i)
+        @_drawPointFor i
 
   _drawPointFor: (index) ->
     @seriesPoints[index] = []
@@ -200,6 +247,45 @@ class Morris.Line extends Morris.Grid
     path = @paths[index]
     if path isnt null
       @drawLinePath path, @colorFor(null, index, 'line'), index
+
+  _drawTrendLine: (index) ->
+    # Least squares fitting for y = x * a + b
+    sum_x = 0
+    sum_y = 0
+    sum_xx = 0
+    sum_xy = 0
+    datapoints = 0
+
+    for val, i in @data
+      x = val.x
+      y = val.y[index]
+      if y is undefined
+        continue
+      if @options.trendLineWeight is false
+        weight = 1
+      else
+        weight = @options.data[i][@options.trendLineWeight]
+      datapoints += weight
+
+      sum_x += x * weight
+      sum_y += y * weight
+      sum_xx += x * x * weight
+      sum_xy += x * y * weight
+
+    a = (datapoints*sum_xy - sum_x*sum_y) / (datapoints*sum_xx - sum_x*sum_x)
+    b = (sum_y / datapoints) - ((a * sum_x) / datapoints)
+
+    data = [{}, {}]
+    data[0].x = @transX(@data[0].x)
+    data[0].y = @transY(@data[0].x * a + b)
+    data[1].x = @transX(@data[@data.length - 1].x)
+    data[1].y = @transY(@data[@data.length - 1].x * a + b)
+
+    path = Morris.Line.createPath data, false, @bottom
+    path = @raphael.path(path)
+      .attr('stroke', @colorFor(null, index, 'trendLine'))
+      .attr('stroke-width', @options.trendLineWidth)
+
 
   # create a path for a data series
   #
@@ -253,11 +339,11 @@ class Morris.Line extends Morris.Grid
   hilight: (index) =>
     if @prevHilight isnt null and @prevHilight isnt index
       for i in [0..@seriesPoints.length-1]
-        if @seriesPoints[i][@prevHilight]
+        if @hasToShow(i) and @seriesPoints[i][@prevHilight]
           @seriesPoints[i][@prevHilight].animate @pointShrinkSeries(i)
     if index isnt null and @prevHilight isnt index
       for i in [0..@seriesPoints.length-1]
-        if @seriesPoints[i][index]
+        if @hasToShow(i) and @seriesPoints[i][index]
           @seriesPoints[i][index].animate @pointGrowSeries(i)
     @prevHilight = index
 
@@ -266,15 +352,10 @@ class Morris.Line extends Morris.Grid
       @options.lineColors.call(@, row, sidx, type)
     else if type is 'point'
       @options.pointFillColors[sidx % @options.pointFillColors.length] || @options.lineColors[sidx % @options.lineColors.length]
+    else if type is 'trendLine'
+      @options.trendLineColors[sidx % @options.trendLineColors.length]
     else
       @options.lineColors[sidx % @options.lineColors.length]
-
-  drawXAxisLabel: (xPos, yPos, text) ->
-    @raphael.text(xPos, yPos, text)
-      .attr('font-size', @options.gridTextSize)
-      .attr('font-family', @options.gridTextFamily)
-      .attr('font-weight', @options.gridTextWeight)
-      .attr('fill', @options.gridTextColor)
 
   drawLinePath: (path, lineColor, lineIndex) ->
     @raphael.path(path)
@@ -311,6 +392,8 @@ class Morris.Line extends Morris.Grid
 
   # @private
   pointGrowSeries: (index) ->
+    if @pointSizeForSeries(index) is 0
+      return
     Raphael.animation r: @pointSizeForSeries(index) + 3, 25, 'linear'
 
   # @private
