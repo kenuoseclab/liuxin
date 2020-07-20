@@ -15,5 +15,10 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/map')
+def map():
+    return render_template('./pages/maps/google.html')
+
+
 if __name__ == '__main__':
     app.run(threaded=True, host='127.0.0.1', port='88', debug=True)
