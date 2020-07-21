@@ -5960,7 +5960,7 @@ define("tinymce/html/Styles", [], function() {
 						}
 					}
 
-					// Convert the URL to relative/absolute depending on config
+					// Convert the URL to relative/absolute depending on myconfig
 					if (urlConverter) {
 						url = urlConverter.call(urlConverterScope, url, 'style');
 					}
@@ -38032,10 +38032,10 @@ define("tinymce/Editor", [
 		 * @param {String} type Optional type parameter.
 		 * @return {String} Configuration parameter value or default value.
 		 * @example
-		 * // Returns a specific config value from the currently active editor
+		 * // Returns a specific myconfig value from the currently active editor
 		 * var someval = tinymce.activeEditor.getParam('myvalue');
 		 *
-		 * // Returns a specific config value from a specific editor instance by id
+		 * // Returns a specific myconfig value from a specific editor instance by id
 		 * var someval2 = tinymce.get('my_editor').getParam('myvalue');
 		 */
 		getParam: function(name, defaultVal, type) {

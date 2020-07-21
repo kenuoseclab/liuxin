@@ -1821,7 +1821,7 @@ module.exports = function(Chart) {
 		}
 	};
 
-	// Register the default config for this type
+	// Register the default myconfig for this type
 	Chart.defaults.scatter = defaultConfig;
 
 	// Scatter charts use line controllers
@@ -4823,7 +4823,7 @@ module.exports = function(Chart) {
 		helpers.each(Array.prototype.slice.call(arguments, 1), function(extension) {
 			helpers.each(extension, function(value, key) {
 				if (key === 'scales') {
-					// Scale config merging is complex. Add out own function here for that
+					// Scale myconfig merging is complex. Add out own function here for that
 					base[key] = helpers.scaleMerge(base.hasOwnProperty(key) ? base[key] : {}, value);
 
 				} else if (key === 'scale') {
@@ -7510,7 +7510,7 @@ module.exports = function(Chart) {
 		// Use a registration function so that we can move to an ES6 map when we no longer need to support
 		// old browsers
 
-		// Scale config defaults
+		// Scale myconfig defaults
 		defaults: {},
 		registerScaleType: function(type, scaleConstructor, defaults) {
 			this.constructors[type] = scaleConstructor;
@@ -8893,7 +8893,7 @@ module.exports = function(Chart) {
 module.exports = function(Chart) {
 
 	var helpers = Chart.helpers;
-	// Default config for a category scale
+	// Default myconfig for a category scale
 	var defaultConfig = {
 		position: "bottom"
 	};

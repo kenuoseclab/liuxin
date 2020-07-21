@@ -3,6 +3,8 @@ import os
 from datetime import timedelta
 from flask_wtf import CSRFProtect
 from flask import render_template
+import sys
+import importlib
 
 app = Flask(__name__)
 app.secret_key = os.urandom(64)
@@ -21,4 +23,5 @@ def map():
 
 
 if __name__ == '__main__':
-    app.run(threaded=True, host='127.0.0.1', port='88', debug=True)
+    print(moduke.aaaa)
+# app.run(threaded=True, host='127.0.0.1', port='88', debug=True)

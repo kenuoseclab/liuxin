@@ -1429,7 +1429,7 @@ define("tinymce/pasteplugin/WordFilter", [
 				});
 
 				// Add style/class attribute to all element rules since the user might have removed them from
-				// paste_word_valid_elements config option and we need to check them for properties
+				// paste_word_valid_elements myconfig option and we need to check them for properties
 				Tools.each(schema.elements, function(rule) {
 					/*eslint dot-notation:0*/
 					if (!rule.attributes["class"]) {
