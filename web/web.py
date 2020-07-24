@@ -1,12 +1,11 @@
-from flask import Flask
-import os
+import os, sys
 from datetime import timedelta
+from flask import Flask, render_template
 from flask_wtf import CSRFProtect
-from flask import render_template
-import sys
 
-sys.path.append(os.path.split(os.path.realpath(__file__))[0] + "/../")
-from config import *
+sys.path.append(os.path.join(os.path.split(os.path.realpath(__file__))[0], os.path.pardir))
+
+from config import Ini
 
 app = Flask(__name__)
 app.config.from_object(Ini)

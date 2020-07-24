@@ -13,5 +13,3 @@ class Mongodb:
 
 class Ini(Web, Mongodb):
     pass
-
-
