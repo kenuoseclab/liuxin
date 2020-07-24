@@ -1,10 +1,17 @@
-from web.web import *
+class Web:
+    WEBNAMEUSER = 'liuxin'
+    WEBPASSWORD = '12345'
 
-mongodbhost = "192.168.253.110"
-mongodbport = 65500
-mongodbname = "liuxin"
-mongodbuser = "liuxin"
-mongodbpass = "12345"
-webnameuser = 'liuxin'
-webpassword = '12345'
-print(app.name)
+
+class Mongodb:
+    MONGODBHOST = "192.168.253.110"
+    MONGODBPORT = 65500
+    MONGODBNAME = "liuxin"
+    MONGODBUSER = "liuxin"
+    MONGODBPASS = "12345"
+
+
+class Ini(Web, Mongodb):
+    pass
+
+

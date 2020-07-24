@@ -4,9 +4,12 @@ from datetime import timedelta
 from flask_wtf import CSRFProtect
 from flask import render_template
 import sys
-import importlib
+
+sys.path.append(os.path.split(os.path.realpath(__file__))[0] + "/../")
+from config import *
 
 app = Flask(__name__)
+app.config.from_object(Ini)
 app.secret_key = os.urandom(64)
 app.permanent_session_lifetime = timedelta(hours=6)
 CSRFProtect(app)
@@ -23,5 +26,4 @@ def map():
 
 
 if __name__ == '__main__':
-    print(moduke.aaaa)
-# app.run(threaded=True, host='127.0.0.1', port='88', debug=True)
+    app.run(threaded=True, host='127.0.0.1', port='88', debug=True)
