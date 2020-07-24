@@ -23,21 +23,21 @@ module.exports = function(grunt) {
       },
       dist: {
         src: [
-          'lib/gmaps.core.js',
-          'lib/gmaps.controls.js',
-          'lib/gmaps.markers.js',
-          'lib/gmaps.overlays.js',
-          'lib/gmaps.geometry.js',
-          'lib/gmaps.layers.js',
-          'lib/gmaps.routes.js',
-          'lib/gmaps.geofences.js',
-          'lib/gmaps.static.js',
-          'lib/gmaps.map_types.js',
-          'lib/gmaps.styles.js',
-          'lib/gmaps.streetview.js',
-          'lib/gmaps.events.js',
-          'lib/gmaps.utils.js',
-          'lib/gmaps.native_extensions.js'
+          'mongo/gmaps.core.js',
+          'mongo/gmaps.controls.js',
+          'mongo/gmaps.markers.js',
+          'mongo/gmaps.overlays.js',
+          'mongo/gmaps.geometry.js',
+          'mongo/gmaps.layers.js',
+          'mongo/gmaps.routes.js',
+          'mongo/gmaps.geofences.js',
+          'mongo/gmaps.static.js',
+          'mongo/gmaps.map_types.js',
+          'mongo/gmaps.styles.js',
+          'mongo/gmaps.streetview.js',
+          'mongo/gmaps.events.js',
+          'mongo/gmaps.utils.js',
+          'mongo/gmaps.native_extensions.js'
         ],
         dest: 'gmaps.js'
       }
