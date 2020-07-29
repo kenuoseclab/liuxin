@@ -44,17 +44,22 @@ def Logout():
 
 
 @app.route('/config', methods=['get', 'post'])
-@loginCheck
+# @loginCheck
 def Config():
     if request.method == 'GET':
         q = request.args.get('q', '')
         val = []
         if q in ('assetscan', 'vulscan'):
-            assetscan = mongo.Config.find({'type': q})
-            if 'config' in assetscan:
+            assetscan = mongo.Config.find_one({'type': q})
+            if assetscan and 'config' in assetscan:
                 for _ in assetscan['config']:
-                    pass
-            return render_template('formAsset.html', type=q, values=val)
+                    if "_" in _:
+                        show = 'list'
+                    else:
+                        show = 'word'
+                    val.append({'type': _, "detail": assetscan['config'][_], "show": show})
+        val=sorted(val, key=lambda x: x['show'], reverse=True)
+        return render_template('formAsset.html', type=q, values=val)
     else:
         pass
 
