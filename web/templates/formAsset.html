@@ -59,7 +59,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group col-sm-12">
                                     <div class="form-line">
-                                        <input type="text" id="" class="form-control" placeholder="">
+                                        <input type="text" id="" class="form-control" placeholder="" value="{{ val['detail']['value'] }}">
                                     </div>
                                 </div>
                             </div>
@@ -91,13 +91,18 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-line">
+                                        {% if val['type'] == 'port_list' %}
                                         <textarea rows="3" class="form-control"
-                                                  placeholder=""></textarea>
+                                                  placeholder="">{{ val['detail']['value'].split('|')[1] }}</textarea>
+                                        {% else %}
+                                        <textarea rows="3" class="form-control"
+                                                  placeholder="">{{ val['detail']['value'] }}</textarea>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row clearfix">
+                        <div class="row">
                             <div class="col-sm-4 col-sm-offset-4">
                                 <button type="button" class="btn btn-block btn-lg btn-primary waves-effect">更新</button>
                             </div>
