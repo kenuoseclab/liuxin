@@ -3,6 +3,7 @@ from datetime import timedelta
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_wtf.csrf import CSRFProtect, CSRFError
 from lib.loginCheck import loginCheck
+from lib import mongo
 
 sys.path.append(os.path.join(os.path.split(os.path.realpath(__file__))[0], os.path.pardir))
 
@@ -47,10 +48,13 @@ def Logout():
 def Config():
     if request.method == 'GET':
         q = request.args.get('q', '')
-        if q == 'assetscan':
-            return render_template('formAsset.html')
-        if q == 'vulscan':
-            return render_template('formVul.html')
+        val = []
+        if q in ('assetscan', 'vulscan'):
+            assetscan = mongo.Config.find({'type': q})
+            if 'config' in assetscan:
+                for _ in assetscan['config']:
+                    pass
+            return render_template('formAsset.html', type=q, values=val)
     else:
         pass
 
