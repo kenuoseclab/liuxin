@@ -21,6 +21,7 @@
         <!-- Input -->
         <div class="row">
             {% for val in values %}
+            {% if val['show'] == 'word' %}
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div class="card">
                     <div class="header bg-light-blue">
@@ -28,26 +29,41 @@
                             {{ val['detail']['info'] }}
                             <i class="material-icons" title="{{ val['detail']['help'] }}">help</i>
                         </h2>
+                        {% if val['type'] == 'masscan' %}
                         <div class="switch header-dropdown m-r--5">
-                            <label>OFF<input type="checkbox" checked=""><span class="lever"></span>ON</label>
+                            <label>OFF<input type="checkbox" {% if val['detail']['value'].split('|')[0] == '1'
+                                %}checked=""{% endif %}><span class="lever"></span>ON</label>
                         </div>
+                        {% endif %}
                     </div>
                     <div class="body">
                         <div class="row">
+                            {% if val['type'] == 'masscan' %}
                             <div class="col-sm-6">
                                 <div class="form-group col-sm-6">
                                     <div class="form-line">
-                                        <input type="text" id="real_path" class="form-control" placeholder="">
+                                        <input type="text" id="real_path" class="form-control" placeholder=""
+                                               value="{{ val['detail']['value'].split('|')[1] }}">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group col-sm-6">
                                     <div class="form-line">
-                                        <input type="text" id="rate" class="form-control" placeholder="">
+                                        <input type="text" id="rate" class="form-control" placeholder=""
+                                               value="{{ val['detail']['value'].split('|')[2] }}">
                                     </div>
                                 </div>
                             </div>
+                            {% else %}
+                            <div class="col-sm-12">
+                                <div class="form-group col-sm-12">
+                                    <div class="form-line">
+                                        <input type="text" id="" class="form-control" placeholder="">
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
                         </div>
                         <div class="row">
                             <div class="col-sm-4 col-sm-offset-4">
@@ -58,297 +74,39 @@
                     </div>
                 </div>
             </div>
+            {% else %}
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header bg-light-blue">
+                        <h2>{{ val['detail']['info'] }}</h2>
+                        {% if val['type'] == 'port_list' %}
+                        <div class="switch header-dropdown m-r--5">
+                            <label>OFF<input type="checkbox" {% if val['detail']['value'].split('|')[0] == '1'
+                                %}checked=""{% endif %}><span class="lever"></span>ON</label>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <textarea rows="3" class="form-control"
+                                                  placeholder=""></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row clearfix">
+                            <div class="col-sm-4 col-sm-offset-4">
+                                <button type="button" class="btn btn-block btn-lg btn-primary waves-effect">更新</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
             {% endfor %}
-<!--            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">-->
-<!--                <div class="card">-->
-<!--                    <div class="header bg-light-blue">-->
-<!--                        <h2>-->
-<!--                            连接超时时间(TCP)-->
-<!--                            <i class="material-icons" title="">help</i>-->
-<!--                        </h2>-->
-<!--                        <div class="switch header-dropdown m-r&#45;&#45;5">-->
-<!--                            <label>OFF<input type="checkbox" checked=""><span class="lever"></span>ON</label>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="body">-->
-<!--                        <div class="row">-->
-<!--                            <div class="col-sm-12">-->
-<!--                                <label for="timeout"></label>-->
-<!--                                <div class="form-group col-sm-12">-->
-<!--                                    <div class="form-line">-->
-<!--                                        <input type="text" id="timeout" class="form-control" placeholder="">-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="row">-->
-<!--                            <div class="col-sm-4 col-sm-offset-4">-->
-<!--                                <button type="button" class="btn btn-block btn-lg btn-primary waves-effect">更新-->
-<!--                                </button>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">-->
-<!--                <div class="card">-->
-<!--                    <div class="header bg-light-blue">-->
-<!--                        <h2>-->
-<!--                            启用MASSCAN-->
-<!--                            <i class="material-icons" title="">help</i>-->
-<!--                        </h2>-->
-<!--                        <div class="switch header-dropdown m-r&#45;&#45;5">-->
-<!--                            <label>OFF<input type="checkbox" checked=""><span class="lever"></span>ON</label>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="body">-->
-
-<!--                        <div class="row">-->
-<!--                            <div class="col-sm-6">-->
-<!--                                <div class="form-group col-sm-6">-->
-<!--                                    <div class="form-line">-->
-<!--                                        <input type="text" id="real_path" class="form-control" placeholder="">-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="col-sm-6">-->
-<!--                                <div class="form-group col-sm-6">-->
-<!--                                    <div class="form-line">-->
-<!--                                        <input type="text" id="rate" class="form-control" placeholder="">-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="row">-->
-<!--                            <div class="col-sm-4 col-sm-offset-4">-->
-<!--                                <button type="button" class="btn btn-block btn-lg btn-primary waves-effect">更新-->
-<!--                                </button>-->
-<!--                            </div>-->
-<!--                        </div>-->
-
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">-->
-<!--                <div class="card">-->
-<!--                    <div class="header bg-light-blue">-->
-<!--                        <h2>-->
-<!--                            连接超时时间(TCP)-->
-<!--                            <i class="material-icons" title="">help</i>-->
-<!--                        </h2>-->
-<!--                        <div class="switch header-dropdown m-r&#45;&#45;5">-->
-<!--                            <label>OFF<input type="checkbox" checked=""><span class="lever"></span>ON</label>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="body">-->
-<!--                        <div class="row">-->
-<!--                            <div class="col-sm-12">-->
-<!--                                <label for="timeout"></label>-->
-<!--                                <div class="form-group col-sm-12">-->
-<!--                                    <div class="form-line">-->
-<!--                                        <input type="text" id="timeout" class="form-control" placeholder="">-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="row">-->
-<!--                            <div class="col-sm-4 col-sm-offset-4">-->
-<!--                                <button type="button" class="btn btn-block btn-lg btn-primary waves-effect">更新-->
-<!--                                </button>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">-->
-<!--                <div class="card">-->
-<!--                    <div class="header bg-light-blue">-->
-<!--                        <h2>扫描资产列表</h2>-->
-<!--                        <div class="switch header-dropdown m-r&#45;&#45;5">-->
-<!--                            <label>OFF<input type="checkbox" checked=""><span class="lever"></span>ON</label>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="body">-->
-<!--                        <div class="row clearfix">-->
-<!--                            <div class="col-sm-12">-->
-<!--                                <div class="form-group">-->
-<!--                                    <div class="form-line">-->
-<!--                                        <textarea rows="3" class="form-control"-->
-<!--                                                  placeholder=""></textarea>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="row clearfix">-->
-<!--                            <div class="col-sm-4 col-sm-offset-4">-->
-<!--                                <button type="button" class="btn btn-block btn-lg btn-primary waves-effect">更新</button>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">-->
-<!--                <div class="card">-->
-<!--                    <div class="header bg-light-blue">-->
-<!--                        <h2>扫描资产列表</h2>-->
-<!--                        <div class="switch header-dropdown m-r&#45;&#45;5">-->
-<!--                            <label>OFF<input type="checkbox" checked=""><span class="lever"></span>ON</label>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="body">-->
-<!--                        <div class="row clearfix">-->
-<!--                            <div class="col-sm-12">-->
-<!--                                <div class="form-group">-->
-<!--                                    <div class="form-line">-->
-<!--                                        <textarea rows="3" class="form-control"-->
-<!--                                                  placeholder=""></textarea>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="row clearfix">-->
-<!--                            <div class="col-sm-4 col-sm-offset-4">-->
-<!--                                <button type="button" class="btn btn-block btn-lg btn-primary waves-effect">更新</button>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">-->
-<!--                <div class="card">-->
-<!--                    <div class="header bg-light-blue">-->
-<!--                        <h2>扫描资产列表</h2>-->
-<!--                        <div class="switch header-dropdown m-r&#45;&#45;5">-->
-<!--                            <label>OFF<input type="checkbox" checked=""><span class="lever"></span>ON</label>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="body">-->
-<!--                        <div class="row clearfix">-->
-<!--                            <div class="col-sm-12">-->
-<!--                                <div class="form-group">-->
-<!--                                    <div class="form-line">-->
-<!--                                        <textarea rows="3" class="form-control"-->
-<!--                                                  placeholder=""></textarea>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="row clearfix">-->
-<!--                            <div class="col-sm-4 col-sm-offset-4">-->
-<!--                                <button type="button" class="btn btn-block btn-lg btn-primary waves-effect">更新</button>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">-->
-<!--                <div class="card">-->
-<!--                    <div class="header bg-light-blue">-->
-<!--                        <h2>扫描资产列表</h2>-->
-<!--                        <div class="switch header-dropdown m-r&#45;&#45;5">-->
-<!--                            <label>OFF<input type="checkbox" checked=""><span class="lever"></span>ON</label>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="body">-->
-<!--                        <div class="row clearfix">-->
-<!--                            <div class="col-sm-12">-->
-<!--                                <div class="form-group">-->
-<!--                                    <div class="form-line">-->
-<!--                                        <textarea rows="3" class="form-control"-->
-<!--                                                  placeholder=""></textarea>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="row clearfix">-->
-<!--                            <div class="col-sm-4 col-sm-offset-4">-->
-<!--                                <button type="button" class="btn btn-block btn-lg btn-primary waves-effect">更新</button>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">-->
-<!--                <div class="card">-->
-<!--                    <div class="header bg-light-blue">-->
-<!--                        <h2>扫描资产列表</h2>-->
-<!--                        <div class="switch header-dropdown m-r&#45;&#45;5">-->
-<!--                            <label>OFF<input type="checkbox" checked=""><span class="lever"></span>ON</label>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="body">-->
-<!--                        <div class="row clearfix">-->
-<!--                            <div class="col-sm-12">-->
-<!--                                <div class="form-group">-->
-<!--                                    <div class="form-line">-->
-<!--                                        <textarea rows="3" class="form-control"-->
-<!--                                                  placeholder=""></textarea>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="row clearfix">-->
-<!--                            <div class="col-sm-4 col-sm-offset-4">-->
-<!--                                <button type="button" class="btn btn-block btn-lg btn-primary waves-effect">更新</button>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">-->
-<!--                <div class="card">-->
-<!--                    <div class="header bg-light-blue">-->
-<!--                        <h2>扫描资产列表</h2>-->
-<!--                        <div class="switch header-dropdown m-r&#45;&#45;5">-->
-<!--                            <label>OFF<input type="checkbox" checked=""><span class="lever"></span>ON</label>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="body">-->
-<!--                        <div class="row clearfix">-->
-<!--                            <div class="col-sm-12">-->
-<!--                                <div class="form-group">-->
-<!--                                    <div class="form-line">-->
-<!--                                        <textarea rows="3" class="form-control"-->
-<!--                                                  placeholder=""></textarea>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="row clearfix">-->
-<!--                            <div class="col-sm-4 col-sm-offset-4">-->
-<!--                                <button type="button" class="btn btn-block btn-lg btn-primary waves-effect">更新</button>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">-->
-<!--                <div class="card">-->
-<!--                    <div class="header bg-light-blue">-->
-<!--                        <h2>扫描资产列表</h2>-->
-<!--                        <div class="switch header-dropdown m-r&#45;&#45;5">-->
-<!--                            <label>OFF<input type="checkbox" checked=""><span class="lever"></span>ON</label>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="body">-->
-<!--                        <div class="row clearfix">-->
-<!--                            <div class="col-sm-12">-->
-<!--                                <div class="form-group">-->
-<!--                                    <div class="form-line">-->
-<!--                                        <textarea rows="3" class="form-control"-->
-<!--                                                  placeholder=""></textarea>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="row clearfix">-->
-<!--                            <div class="col-sm-4 col-sm-offset-4">-->
-<!--                                <button type="button" class="btn btn-block btn-lg btn-primary waves-effect">更新</button>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
         </div>
     </div>
 </section>
