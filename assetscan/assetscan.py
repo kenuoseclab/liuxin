@@ -1,7 +1,4 @@
-from tools.mongo import *
-import threading
+from toolsLib.common import *
 
 if __name__ == '__main__':
-
-    assetIni = Config.find_one({'type': 'assetscan'})
-    print(assetIni)
+    configIni = getConfig()

@@ -113,7 +113,7 @@ window.console && console.log('Use tinymce.js instead of tinymce.jquery.js.');
  */
 
 /**
- * Contains various tools for rect/position calculation.
+ * Contains various toolsLib for rect/position calculation.
  *
  * @class tinymce.geom.Rect
  */
@@ -9855,10 +9855,10 @@ define("tinymce/AddOnManager", [
  *         }
  *     });
  *
- *     // Adds a menu item to the tools menu
+ *     // Adds a menu item to the toolsLib menu
  *     editor.addMenuItem('example', {
  *         text: 'Example plugin',
- *         context: 'tools',
+ *         context: 'toolsLib',
  *         onclick: function() {
  *             // Open window with a specific url
  *             editor.windowManager.open({
@@ -36819,7 +36819,7 @@ define("tinymce/util/Uuid", [
 /**
  * Include the base event class documentation.
  *
- * @include ../../../tools/docs/tinymce.Event.js
+ * @include ../../../toolsLib/docs/tinymce.Event.js
  */
 
 /**
@@ -36894,7 +36894,7 @@ define("tinymce/Editor", [
 	/**
 	 * Include documentation for all the events.
 	 *
-	 * @include ../../../tools/docs/tinymce.Editor.js
+	 * @include ../../../toolsLib/docs/tinymce.Editor.js
 	 */
 
 	/**
@@ -38134,7 +38134,7 @@ define("tinymce/Editor", [
 		 *    setup: function(ed) {
 		 *       ed.addMenuItem('example', {
 		 *          text: 'My menu item',
-		 *          context: 'tools',
+		 *          context: 'toolsLib',
 		 *          onclick: function() {
 		 *             ed.insertContent('Hello world!!');
 		 *          }

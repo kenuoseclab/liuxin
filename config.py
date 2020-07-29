@@ -1,5 +1,5 @@
 class Web:
-    WEBNAMEUSER = 'liuxin'
+    WEBUSERNAME = 'liuxin'
     WEBPASSWORD = '12345'
 
 

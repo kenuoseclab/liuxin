@@ -8,3 +8,4 @@ from config import Ini
 con = MongoDB(Ini.MONGODBHOST, Ini.MONGODBPORT, Ini.MONGODBNAME, Ini.MONGODBUSER, Ini.MONGODBPASS)
 Config = con.liuxin.Config
 Info = con.liuxin.Info
+Heartbeat = con.liuxin.Heartbeat
