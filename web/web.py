@@ -90,6 +90,11 @@ def dashboard():
     return render_template('dashboard.html')
 
 
+@app.route('/history')
+def history():
+    return render_template('history.html')
+
+
 @app.route('/error')
 def Error():
     return render_template('500.html')
