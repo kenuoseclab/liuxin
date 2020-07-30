@@ -9,3 +9,4 @@ con = MongoDB(Ini.MONGODBHOST, Ini.MONGODBPORT, Ini.MONGODBNAME, Ini.MONGODBUSER
 Config = con.liuxin.Config
 Info = con.liuxin.Info
 Heartbeat = con.liuxin.Heartbeat
+

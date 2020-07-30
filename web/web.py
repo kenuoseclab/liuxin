@@ -44,10 +44,9 @@ def Logout():
 
 
 @app.route('/config', methods=['get', 'post'])
-# @loginCheck
+@loginCheck
 def Config():
     if request.method == 'GET':
-        print('get')
         q = request.args.get('q', '')
         val = []
         if q in ('assetscan', 'vulscan'):
@@ -60,7 +59,7 @@ def Config():
                         show = 'word'
                     val.append({'type': _, "detail": assetscan['config'][_], "show": show})
         val = sorted(val, key=lambda x: x['show'], reverse=True)
-        return render_template('formAsset.html', type=q, values=val)
+        return render_template('config.html', type=q, values=val)
     elif request.method == 'POST':
         rsp = 'fail'
         name = request.form.get('name', '')
@@ -69,11 +68,15 @@ def Config():
         if name and value and conftype:
             if name == 'masscan' or name == 'port_list':
                 row_val = mongo.Config.find_one({'type': conftype})
-                value = value + '|' + row_val['config'][name]['value'].split('|', 1)[1]
-            elif name == '':
-                pass
-            elif name == "":
-                pass
+                value = row_val['config'][name]['value'].split('|', 1)[0] + "|" + value
+            elif name == 'masscan_flag':
+                name = 'masscan'
+                row_val = mongo.Config.find_one({'type': conftype})
+                value = value + "|" + row_val['config'][name]['value'].split('|', 1)[1]
+            elif name == "port_list_flag":
+                name = 'port_list'
+                row_val = mongo.Config.find_one({'type': conftype})
+                value = value + "|" + row_val['config'][name]['value'].split('|', 1)[1]
             result = mongo.Config.find_one_and_update({'type': conftype},
                                                       {'$set': {'config.' + name + '.value': value}})
             if result:
@@ -81,9 +84,10 @@ def Config():
         return rsp
 
 
-@app.route('/test')
-def test():
-    return render_template('index.html')
+@app.route('/dashboard')
+@loginCheck
+def dashboard():
+    return render_template('dashboard.html')
 
 
 @app.route('/error')

@@ -34,8 +34,7 @@
                         </h2>
                         {% if val['type'] == 'masscan' %}
                         <div class="switch header-dropdown m-r--5">
-                            <label>OFF<input type="checkbox" {% if val['detail']['value'].split('|')[0] == '1'
-                                %}checked=""{% endif %}><span class="lever"></span>ON</label>
+                            <label>OFF<input type="checkbox" id="masscan_flag" {% if val['detail']['value'].split('|')[0] == '1' %}checked=""{% endif %}><span class="lever"></span>ON</label>
                         </div>
                         {% endif %}
                     </div>
@@ -81,10 +80,13 @@
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div class="card">
                     <div class="header bg-light-blue">
-                        <h2>{{ val['detail']['info'] }}</h2>
+                        <h2>
+                            {{ val['detail']['info'] }}
+                            <i class="material-icons" title="{{ val['detail']['help'] }}">help</i>
+                        </h2>
                         {% if val['type'] == 'port_list' %}
                         <div class="switch header-dropdown m-r--5">
-                            <label>OFF<input type="checkbox" {% if val['detail']['value'].split('|')[0] == '1'
+                            <label>OFF<input type="checkbox" id="icmp_flag" {% if val['detail']['value'].split('|')[0] == '1'
                                 %}checked=""{% endif %}><span class="lever"></span>ON</label>
                         </div>
                         {% endif %}
@@ -120,6 +122,7 @@
 {% endblock %}
 
 {% block js %}
+<script src="../static/js/admin.js"></script>
 <script src="../static/plugins/sweetalert/sweetalert.min.js"></script>
 <script src="../static/script/config.js"></script>
 {% endblock %}
