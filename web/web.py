@@ -47,6 +47,7 @@ def Logout():
 # @loginCheck
 def Config():
     if request.method == 'GET':
+        print('get')
         q = request.args.get('q', '')
         val = []
         if q in ('assetscan', 'vulscan'):
@@ -58,10 +59,26 @@ def Config():
                     else:
                         show = 'word'
                     val.append({'type': _, "detail": assetscan['config'][_], "show": show})
-        val=sorted(val, key=lambda x: x['show'], reverse=True)
+        val = sorted(val, key=lambda x: x['show'], reverse=True)
         return render_template('formAsset.html', type=q, values=val)
-    else:
-        pass
+    elif request.method == 'POST':
+        rsp = 'fail'
+        name = request.form.get('name', '')
+        value = request.form.get('value', '')
+        conftype = request.form.get('conftype', '')
+        if name and value and conftype:
+            if name == 'masscan' or name == 'port_list':
+                row_val = mongo.Config.find_one({'type': conftype})
+                value = value + '|' + row_val['config'][name]['value'].split('|', 1)[1]
+            elif name == '':
+                pass
+            elif name == "":
+                pass
+            result = mongo.Config.find_one_and_update({'type': conftype},
+                                                      {'$set': {'config.' + name + '.value': value}})
+            if result:
+                rsp = 'success'
+        return rsp
 
 
 @app.route('/test')

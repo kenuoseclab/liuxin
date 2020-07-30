@@ -1,4 +1,7 @@
 ﻿{% extends "base.html" %}
+{% block head %}
+<link href="../static/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+{% endblock %}
 {% block section %}
 <section class="content">
     <div class="container-fluid">
@@ -43,7 +46,7 @@
                                 <div class="form-group col-sm-6">
                                     <div class="form-line">
                                         <input type="text" id="real_path" class="form-control" placeholder=""
-                                               value="{{ val['detail']['value'].split('|')[1] }}">
+                                               value="{{ val['detail']['value'].split('|')[1] }}" name="{{ val['type'] }}">
                                     </div>
                                 </div>
                             </div>
@@ -59,7 +62,8 @@
                             <div class="col-sm-12">
                                 <div class="form-group col-sm-12">
                                     <div class="form-line">
-                                        <input type="text" id="" class="form-control" placeholder="" value="{{ val['detail']['value'] }}">
+                                        <input type="text" id="" class="form-control" placeholder=""
+                                               value="{{ val['detail']['value'] }}" name="{{ val['type'] }}">
                                     </div>
                                 </div>
                             </div>
@@ -67,8 +71,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-4 col-sm-offset-4">
-                                <button type="button" class="btn btn-block btn-lg btn-primary waves-effect">更新
-                                </button>
+                                <button type="button" class="btn btn-block btn-lg btn-primary waves-effect update" inputname="{{ val['type'] }}">更新</button>
                             </div>
                         </div>
                     </div>
@@ -92,11 +95,9 @@
                                 <div class="form-group">
                                     <div class="form-line">
                                         {% if val['type'] == 'port_list' %}
-                                        <textarea rows="3" class="form-control"
-                                                  placeholder="">{{ val['detail']['value'].split('|')[1] }}</textarea>
+                                        <textarea rows="3" class="form-control" name="{{ val['type'] }}">{{ val['detail']['value'].split('|')[1] }}</textarea>
                                         {% else %}
-                                        <textarea rows="3" class="form-control"
-                                                  placeholder="">{{ val['detail']['value'] }}</textarea>
+                                        <textarea rows="3" class="form-control" name="{{ val['type'] }}">{{ val['detail']['value'] }}</textarea>
                                         {% endif %}
                                     </div>
                                 </div>
@@ -104,7 +105,8 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-4 col-sm-offset-4">
-                                <button type="button" class="btn btn-block btn-lg btn-primary waves-effect">更新</button>
+                                <button type="button" class="btn btn-block btn-lg btn-primary waves-effect update" inputname="{{ val['type'] }}">更新
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -115,6 +117,11 @@
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block js %}
+<script src="../static/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="../static/script/config.js"></script>
 {% endblock %}
 </body>
 </html>
