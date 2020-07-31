@@ -51,7 +51,8 @@ class icmp():
                     logWrite('{} active'.format(ac_ip))
                     recvFrom.add(ac_ip)
             except Exception as e:
-                continue
+                print(e)
+                pass
             finally:
                 if not t.is_alive():
                     break
