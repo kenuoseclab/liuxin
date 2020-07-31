@@ -13,11 +13,18 @@ class start():
         allIp = self.getAllIp()
         while True:
             if self.icmp:
-                pass
+                self.icmpScan(allIp)
             elif self.masscan:
                 pass
             else:
                 self.scan()
+                break
+
+    def icmpScan(self, allIp):
+        try:
+            pass
+        except Exception as e:
+            print(e)
 
     def scan(self):
         pass
