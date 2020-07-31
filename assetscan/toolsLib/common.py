@@ -1,5 +1,7 @@
 from .mongo import *
 from datetime import datetime
+import time
+import base64
 
 
 def format_rules(key, rule):
@@ -34,20 +36,36 @@ def getConfig():
 
 
 def getRecord():
-    records = {}
+    record = {}
     try:
         date = datetime.now().strftime("%Y-%m-%d")
         res = Record.find_one({'date': date})
         if res:
-            records[date] = res['info']
+            record[date] = res['info']
         else:
-            records[date] = {'active': 0, 'vulscan': 0}
+            record[date] = {'add': 0, 'update': 0, 'delete': 0}
     except Exception as e:
         print(e)
-    return records
+    return record
 
 
-def monitor(configIni):
+def monitor(configIni, record, totalFlag):
     while True:
-        date = datetime.now().strftime("%Y-%m-%d")
-        new_config = Config.find_one({'type': 'assetscan'})
+        try:
+            date = datetime.now().strftime("%Y-%m-%d")
+            Heartbeat.update_one({'type': 'assetscan'}, {'$set': {'up_time': date}})
+            if date not in record:
+                record[date] = {'add': 0, 'update': 0, 'delete': 0}
+            Record.find_one_and_update({'date': date}, {'$set': {'info': record[date]}}, upsert=True)
+            new_config = getConfig()
+            if base64.b64encode(new_config['scan_list']) != base64.b64encode(configIni['scan_list']):
+                totalFlag['isScan'] = 1
+            configIni.clear()
+            configIni.update(new_config)
+        except Exception as e:
+            print(e)
+        time.sleep(10)
+
+
+def cursor():
+    pass

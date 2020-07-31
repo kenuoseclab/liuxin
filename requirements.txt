@@ -1,5 +1,4 @@
 flask
 flask_wtf
 pocsuite3
-python3-nmap
 pymongo
