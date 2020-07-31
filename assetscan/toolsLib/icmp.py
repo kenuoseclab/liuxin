@@ -2,6 +2,9 @@ import os
 import struct
 import array
 import socket
+import threading
+import time
+from .log import logWrite
 
 
 class icmp():
@@ -23,14 +26,41 @@ class icmp():
 
     @property
     def __icmpPacket(self):
-        pass
-        return
+        header = struct.pack('bbHHh', 8, 0, 0, self.__id, 0)
+        packet = header + self.__data
+        sum = self.__checkSum(packet)
+        header = struct.pack('bbHHh', 8, 0, sum, self.__id, 0)
+        return header + self.__data
 
     @property
-    def __sock(self):
+    def __icmpSock(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP)
         sock.settimeout(self.timeout)
         return sock
 
     def run(self):
-        return
+        sock = self.__icmpSock
+        packet = self.__icmpPacket
+        recvFrom = set()
+        t = threading.Thread(target=self.__send, args=(sock, self.allIp, packet))
+        t.start()
+        while True:
+            try:
+                ac_ip = sock.recvfrom(1024)[1][0]
+                if ac_ip not in recvFrom:
+                    logWrite('{} is active'.format(ac_ip))
+                    recvFrom.add(ac_ip)
+            except Exception as e:
+                continue
+            finally:
+                if not t.is_alive():
+                    break
+
+    def __send(self, sock, packet):
+        for ip in self.allIp:
+            try:
+                sock.sendto(packet, (ip, 1))
+            except Exception as e:
+                print(e)
+                pass
+        time.sleep(self.timeout)
