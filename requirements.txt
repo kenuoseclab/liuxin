@@ -1,2 +1,5 @@
 flask
 flask_wtf
+pocsuite3
+pymongo
+IPy

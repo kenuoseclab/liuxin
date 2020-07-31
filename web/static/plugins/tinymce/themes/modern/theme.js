@@ -123,7 +123,7 @@ tinymce.ThemeManager.add('modern', function(editor) {
 	}
 
 	/**
-	 * Creates the toolbars from config and returns a toolbar array.
+	 * Creates the toolbars from myconfig and returns a toolbar array.
 	 *
 	 * @param {String} size Optional toolbar item size.
 	 * @return {Array} Array with toolbars.
@@ -177,7 +177,7 @@ tinymce.ThemeManager.add('modern', function(editor) {
 	}
 
 	/**
-	 * Creates the menu buttons based on config.
+	 * Creates the menu buttons based on myconfig.
 	 *
 	 * @return {Array} Menu buttons array.
 	 */

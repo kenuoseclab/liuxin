@@ -27,17 +27,17 @@ module.exports = function (grunt) {
                   "###\n",
         },
         src: [
-          'lib/morris.coffee',
-          'lib/morris.grid.coffee',
-          'lib/morris.hover.coffee',
-          'lib/morris.line.coffee',
-          'lib/morris.area.coffee',
-          'lib/morris.bar.coffee',
-          'lib/morris.donut.coffee'
+          'mongo/morris.coffee',
+          'mongo/morris.grid.coffee',
+          'mongo/morris.hover.coffee',
+          'mongo/morris.line.coffee',
+          'mongo/morris.area.coffee',
+          'mongo/morris.bar.coffee',
+          'mongo/morris.donut.coffee'
         ],
         dest: 'build/morris.coffee'
       },
-      'build/spec.coffee': ['spec/support/**/*.coffee', 'spec/lib/**/*.coffee']
+      'build/spec.coffee': ['spec/support/**/*.coffee', 'spec/mongo/**/*.coffee']
     },
     less: {
       all: {
@@ -64,12 +64,12 @@ module.exports = function (grunt) {
     },
     watch: {
       all: {
-        files: ['lib/**/*.coffee', 'spec/lib/**/*.coffee', 'spec/support/**/*.coffee', 'less/**/*.less'],
+        files: ['mongo/**/*.coffee', 'spec/mongo/**/*.coffee', 'spec/support/**/*.coffee', 'less/**/*.less'],
         tasks: 'default'
       },
       dev: {
-        files:  'lib/*.coffee' ,
-        tasks: ['concat:build/morris.coffee', 'coffee:lib']
+        files:  'mongo/*.coffee' ,
+        tasks: ['concat:build/morris.coffee', 'coffee:mongo']
       }
     },
     shell: {

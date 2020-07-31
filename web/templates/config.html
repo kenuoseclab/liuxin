@@ -1,0 +1,130 @@
+﻿{% extends "base.html" %}
+{% block head %}
+<link href="../static/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+{% endblock %}
+{% block section %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="">配置</a>
+                </li>
+                {% if type == 'assetscan'%}
+                <li>
+                    <a href="">资产扫描配置</a>
+                </li>
+                {% else %}
+                <li>
+                    <a href="">漏洞扫描配置</a>
+                </li>
+                {% endif %}
+            </ol>
+        </div>
+        <!-- Input -->
+        <div class="row">
+            {% for val in values %}
+            {% if val['show'] == 'word' %}
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header bg-light-blue">
+                        <h2>
+                            {{ val['detail']['info'] }}
+                            <i class="material-icons" title="{{ val['detail']['help'] }}">help</i>
+                        </h2>
+                        {% if val['type'] == 'masscan' %}
+                        <div class="switch header-dropdown m-r--5">
+                            <label>OFF<input type="checkbox" id="masscan_flag" {% if val['detail']['value'].split('|')[0] == '1' %}checked=""{% endif %}><span class="lever"></span>ON</label>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="body">
+                        <div class="row">
+                            {% if val['type'] == 'masscan' %}
+                            <div class="col-sm-6">
+                                <div class="form-group col-sm-6">
+                                    <div class="form-line">
+                                        <input type="text" id="real_path" class="form-control" placeholder=""
+                                               value="{{ val['detail']['value'].split('|')[1] }}" name="{{ val['type'] }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group col-sm-6">
+                                    <div class="form-line">
+                                        <input type="text" id="rate" class="form-control" placeholder=""
+                                               value="{{ val['detail']['value'].split('|')[2] }}">
+                                    </div>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="col-sm-12">
+                                <div class="form-group col-sm-12">
+                                    <div class="form-line">
+                                        <input type="text" id="" class="form-control" placeholder=""
+                                               value="{{ val['detail']['value'] }}" name="{{ val['type'] }}">
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 col-sm-offset-4">
+                                <button type="button" class="btn btn-block btn-lg btn-primary waves-effect update" inputname="{{ val['type'] }}">更新</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header bg-light-blue">
+                        <h2>
+                            {{ val['detail']['info'] }}
+                            <i class="material-icons" title="{{ val['detail']['help'] }}">help</i>
+                        </h2>
+                        {% if val['type'] == 'port_list' %}
+                        <div class="switch header-dropdown m-r--5">
+                            <label>OFF<input type="checkbox" id="icmp_flag" {% if val['detail']['value'].split('|')[0] == '1'
+                                %}checked=""{% endif %}><span class="lever"></span>ON</label>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        {% if val['type'] == 'port_list' %}
+                                        <textarea rows="3" class="form-control" name="{{ val['type'] }}">{{ val['detail']['value'].split('|')[1] }}</textarea>
+                                        {% else %}
+                                        <textarea rows="3" class="form-control" name="{{ val['type'] }}">{{ val['detail']['value'] }}</textarea>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 col-sm-offset-4">
+                                <button type="button" class="btn btn-block btn-lg btn-primary waves-effect update" inputname="{{ val['type'] }}">更新
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block js %}
+<script src="../static/js/admin.js"></script>
+<script src="../static/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="../static/script/config.js"></script>
+{% endblock %}
+</body>
+</html>
