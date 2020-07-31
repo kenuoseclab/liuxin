@@ -21,6 +21,7 @@ if __name__ == '__main__':
             day = date.day
             dateStr = date.strftime('%Y%m%d')
             cy_day, cy_hour = configIni['cycle'].split('|')
+            logWrite('扫描规则：' + configIni['cycle'])
             if (dateStr not in dateRunRecord and hour == int(cy_hour) and day % int(cy_day) == 0) or totalFlag[
                 'isScan']:
                 totalFlag['isScan'] = 0

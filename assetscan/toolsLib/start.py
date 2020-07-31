@@ -1,3 +1,7 @@
+from .tools import *
+from IPy import IP
+
+
 class start():
     def __init__(self, configIni):
         self.configIni = configIni
@@ -7,14 +11,13 @@ class start():
 
     def run(self):
         allIp = self.getAllIp()
-        for ip in allIp:
-            while True:
-                if self.icmp:
-                    pass
-                elif self.masscan:
-                    pass
-                else:
-                    self.scan()
+        while True:
+            if self.icmp:
+                pass
+            elif self.masscan:
+                pass
+            else:
+                self.scan()
 
     def scan(self):
         pass
@@ -27,10 +30,11 @@ class start():
                 try:
                     if not row_ip:
                         continue
-                    elif '_' in row_ip:
-                        pass
+                    elif '-' in row_ip:
+                        allIp.update(gen_ip(row_ip))
                     elif '/' in row_ip:
-                        pass
+                        ipList = [str(x) for x in IP(row_ip)]
+                        allIp.update(ipList[1:len(ipList) - 1])
                     else:
                         allIp.add(row_ip)
                 except Exception as e:
