@@ -15,7 +15,6 @@ def removeSide(ip):
 def num2ip(num):
     return '%s.%s.%s.%s' % (
         removeSide((num >> 24) & 0xff), (num >> 16) & 0xff, (num >> 8) & 0xff, removeSide((num & 0xff)))
-    # return '%s.%s.%s.%s' % ((num & 0xff000000)>>24,(num & 0x00ff0000)>>16,(num & 0x00000ff00)>>8,num & 0x000000ff)
 
 
 def gen_ip(ip):

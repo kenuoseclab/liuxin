@@ -48,7 +48,7 @@ class icmp():
             try:
                 ac_ip = sock.recvfrom(1024)[1][0]
                 if ac_ip not in recvFrom:
-                    logWrite('{} is active'.format(ac_ip))
+                    logWrite('{} active'.format(ac_ip))
                     recvFrom.add(ac_ip)
             except Exception as e:
                 continue
