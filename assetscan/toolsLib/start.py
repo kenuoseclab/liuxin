@@ -13,11 +13,12 @@ class start():
     def run(self):
         allIp = self.getAllIp()
         pingAllIp = set()
+        ipPort = {}
         while True:
             if self.icmp and not pingAllIp:
-                self.icmpScan(allIp)
-            elif self.masscan:
-
+                pingAllIp = self.icmpScan(allIp)
+            elif self.masscan and not ipPort:
+                pass
             else:
                 self.scan()
                 break
@@ -25,7 +26,7 @@ class start():
     def icmpScan(self, allIp):
         try:
             ping = icmp(allIp)
-            ping.run()
+            return ping.run()
         except Exception as e:
             print()
             print(e)

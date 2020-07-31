@@ -55,6 +55,7 @@ class icmp():
             finally:
                 if not t.is_alive():
                     break
+        return self.allIp & recvFrom
 
     def __send(self, sock, packet):
         for ip in self.allIp:
