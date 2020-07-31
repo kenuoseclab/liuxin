@@ -1,5 +1,6 @@
 from .tools import *
 from IPy import IP
+from .icmp import icmp
 
 
 class start():
@@ -11,23 +12,27 @@ class start():
 
     def run(self):
         allIp = self.getAllIp()
+        pingAllIp = set()
         while True:
-            if self.icmp:
+            if self.icmp and not pingAllIp:
                 self.icmpScan(allIp)
             elif self.masscan:
-                pass
+
             else:
                 self.scan()
                 break
 
     def icmpScan(self, allIp):
         try:
-            pass
+            ping = icmp(allIp)
+            ping.run()
         except Exception as e:
+            print()
             print(e)
+            return allIp
 
     def scan(self):
-        pass
+        return
 
     def getAllIp(self):
         allIp = set()

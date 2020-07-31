@@ -1,6 +1,6 @@
-class Pinger():
-    def __init__(self):
-        pass
+class icmp():
+    def __init__(self, allIp):
+        self.allIp = allIp
 
     @property
     def __icmpPacket(self):
@@ -12,3 +12,5 @@ class Pinger():
         pass
         return
 
+    def run(self):
+        return
